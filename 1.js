@@ -1,8 +1,26 @@
 
 const http = require('http')
-const routes = require('./routes') // here routes is locked and we can edit from the outside
-console.log(routes.someText)
-const server = http.createServer(routes.handler) // because we use a object
-//const server = http.createServer(routes) // createserver and execute the function the whatever that is inside the paranthereces
 
-server.listen(4000)
+const express = require('express')
+
+const bodyparser = require('body-parser')
+
+const app = express()
+
+app.use(bodyparser.urlencoded({extended:false}))
+
+
+app.use('/add-product',(req, res, next)=>{
+        res.send('<form action="/product" method="POST"><input type ="text" name = "title"><input type ="text" name = "title"><button type="submit">add</button></form>')
+})
+
+app.use('/product',(req,res,next)=>{
+    console.log(req.body)
+    res.redirect('/')
+})
+
+app.use('/',(req, res, next)=>{
+   
+    res.send('<h1>hello from express</h1>')
+}) //here '/' means that the path is start from the / not /
+app.listen(4000);
